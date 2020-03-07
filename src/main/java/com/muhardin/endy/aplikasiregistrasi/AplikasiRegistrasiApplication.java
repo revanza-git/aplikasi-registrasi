@@ -53,16 +53,19 @@ public class AplikasiRegistrasiApplication {
 
 	@Bean @Profile("!heroku")
 	public GoogleClientSecrets localFileClientSecrets() throws Exception {
-		return GoogleClientSecrets.load(jsonFactory(),
-				new InputStreamReader(new FileInputStream(dataStoreFolder + File.separator + CLIENT_SECRET_JSON_FILE)));
+		return loadGoogleClientSecrets();
 	}
 
-	@Bean
-	@Profile("heroku")
+	@Bean @Profile("heroku")
 	public GoogleClientSecrets environmentVariableClientSecrets() throws Exception {
 		restoreClientSecret();
 		restoreStoredCredential();
-		return localFileClientSecrets();
+		return loadGoogleClientSecrets();
+	}
+
+	private GoogleClientSecrets loadGoogleClientSecrets() throws IOException {
+		return GoogleClientSecrets.load(jsonFactory(),
+				new InputStreamReader(new FileInputStream(dataStoreFolder + File.separator + CLIENT_SECRET_JSON_FILE)));
 	}
 
 	private void restoreStoredCredential() throws IOException {
