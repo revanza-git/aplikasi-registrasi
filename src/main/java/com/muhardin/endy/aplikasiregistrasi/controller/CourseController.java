@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
 @Controller
@@ -30,8 +31,8 @@ public class CourseController {
     }
 
     @GetMapping("/enroll")
-    public ModelMap displayEnrollment() {
-        return new ModelMap();
+    public ModelMap displayEnrollment(@RequestParam Materi materi) {
+        return new ModelMap().addAttribute("materi", materi);
     }
 
     @PostMapping("/enroll")

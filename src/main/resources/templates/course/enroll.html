@@ -12,8 +12,9 @@
     Anda akan mendaftar untuk workshop :
 
     <ul>
-        <li>Kode : JVM-002</li>
-        <li>Nama : JVM Workshop Batch 002</li>
+        <li>Kode : <span th:text="${materi.kode}">JVM-002</span></li>
+        <li>Nama : <span th:text="${materi.nama}">JVM Workshop Batch 002</span></li>
+        <li>Biaya : Rp. <span th:text="${materi.biaya}">JVM Workshop Batch 002</span></li>
     </ul>
 
     <input type="submit" value="Daftar">
