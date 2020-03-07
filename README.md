@@ -7,6 +7,8 @@ Fitur Aplikasi:
 * Generate tagihan
 * Pembayaran
 
+[![Mockup Aplikasi](docs/mockup-aplikasi-registrasi.jpg)]((docs/mockup-aplikasi-registrasi.jpg))
+
 ## Cara Membuat Database ##
 
 1. Create user untuk connect ke database
