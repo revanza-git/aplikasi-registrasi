@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -33,8 +34,8 @@ import java.util.List;
 import java.util.Properties;
 
 @Slf4j
-@Service
-public class GMailApiService {
+@Service @Profile("!default")
+public class GMailApiService implements EmailService {
     private static final List<String> SCOPES =
             Arrays.asList(GmailScopes.GMAIL_SEND);
 

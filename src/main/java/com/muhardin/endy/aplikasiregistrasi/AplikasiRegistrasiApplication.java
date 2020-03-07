@@ -51,7 +51,7 @@ public class AplikasiRegistrasiApplication {
 		return new SpringDataDialect();
 	}
 
-	@Bean @Profile("!heroku")
+	@Bean @Profile("local")
 	public GoogleClientSecrets localFileClientSecrets() throws Exception {
 		return loadGoogleClientSecrets();
 	}

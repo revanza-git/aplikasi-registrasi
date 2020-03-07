@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.Valid;
 import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ public class RegistrationService {
 
     @Autowired private PesertaDao pesertaDao;
     @Autowired private VerifikasiEmailDao verifikasiEmailDao;
-    @Autowired private GMailApiService gMailApiService;
+    @Autowired private EmailService emailService;
     @Autowired private MustacheFactory mustacheFactory;
 
     public void registrasiPesertaBaru(Peserta p) {
@@ -58,7 +57,7 @@ public class RegistrationService {
         StringWriter output = new StringWriter();
         templateEmail.execute(output, data);
 
-        gMailApiService.kirimEmail(
+        emailService.kirimEmail(
                 mailFrom,
                 ve.getPeserta().getEmail(),
                 "Verifikasi Email "+ve.getPeserta().getNama(),
