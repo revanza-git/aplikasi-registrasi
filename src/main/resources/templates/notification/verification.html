@@ -6,8 +6,10 @@
 </head>
 <body>
     <h1>Verifikasi Email</h1>
-    Halo Endy Muhardin ... <br>
+    Halo {{nama}} ... <br>
     Terima kasih telah mendaftar di aplikasi. <br>
-    <a href="http://localhost:8080/registration/verify?token=1234-abcd">Klik link berikut untuk melakukan verifikasi</a>
+    <a href="{{server.url}}/registration/verify?token={{token}}">
+        Klik link berikut untuk melakukan verifikasi
+    </a>
 </body>
 </html>
