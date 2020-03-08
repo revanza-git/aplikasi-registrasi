@@ -8,7 +8,7 @@
 <body>
 <div layout:fragment="content">
     <h1>Pendaftaran Workshop</h1>
-    <form method="post">
+    <form method="post" th:action="@{/course/enroll}">
     Anda akan mendaftar untuk workshop :
 
     <ul>
@@ -17,6 +17,14 @@
         <li>Biaya : Rp. <span th:text="${materi.biaya}">JVM Workshop Batch 002</span></li>
     </ul>
 
+        untuk peserta :
+        <ul>
+            <li>Nama : <span th:text="${peserta.nama}">Nama Peserta</span></li>
+            <li>Nama : <span th:text="${peserta.email}">Email</span></li>
+        </ul>
+
+        <input type="hidden" name="peserta" th:value="${peserta.id}" />
+        <input type="hidden" name="materi" th:value="${materi.id}" />
     <input type="submit" value="Daftar">
     </form>
 </div>
