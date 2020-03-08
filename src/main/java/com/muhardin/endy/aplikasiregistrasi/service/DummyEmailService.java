@@ -11,5 +11,7 @@ public class DummyEmailService implements EmailService {
     @Override
     public void kirimEmail(String from, String to, String subject, String content) {
         log.info("Mengirim email ke {}", to);
+        log.info("Subject : {}", subject);
+        log.info("Content : {}", content);
     }
 }
