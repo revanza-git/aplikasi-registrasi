@@ -28,6 +28,8 @@ public class Peserta {
     @Email
     private String email;
 
+    private String password;
+
     @NotNull
     private Boolean emailTerverifikasi = false;
 }

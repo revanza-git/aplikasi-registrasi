@@ -6,8 +6,10 @@ import com.muhardin.endy.aplikasiregistrasi.dao.PesertaDao;
 import com.muhardin.endy.aplikasiregistrasi.dao.VerifikasiEmailDao;
 import com.muhardin.endy.aplikasiregistrasi.entity.Peserta;
 import com.muhardin.endy.aplikasiregistrasi.entity.VerifikasiEmail;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,7 @@ public class RegistrationService {
     @Autowired private VerifikasiEmailDao verifikasiEmailDao;
     @Autowired private EmailService emailService;
     @Autowired private MustacheFactory mustacheFactory;
+    @Autowired private PasswordEncoder passwordEncoder;
 
     public void registrasiPesertaBaru(Peserta p) {
         VerifikasiEmail ve = new VerifikasiEmail();
@@ -40,17 +43,21 @@ public class RegistrationService {
         ve.setToken(UUID.randomUUID().toString());
         ve.setExpire(LocalDateTime.now().plusDays(tokenExpiryDays));
 
+        String generatedPassword = RandomStringUtils.randomAlphanumeric(8);
+        p.setPassword(passwordEncoder.encode(generatedPassword));
+
         pesertaDao.save(p);
         verifikasiEmailDao.save(ve);
 
-        kirimVerifikasi(ve);
+        kirimVerifikasi(ve, generatedPassword);
     }
 
-    private void kirimVerifikasi(VerifikasiEmail ve) {
+    private void kirimVerifikasi(VerifikasiEmail ve, String password) {
         Mustache templateEmail =
                 mustacheFactory.compile("templates/notification/verification.html");
         Map<String, String> data = new HashMap<>();
         data.put("nama", ve.getPeserta().getNama());
+        data.put("password", password);
         data.put("server.url", serverUrl);
         data.put("token", ve.getToken());
 
