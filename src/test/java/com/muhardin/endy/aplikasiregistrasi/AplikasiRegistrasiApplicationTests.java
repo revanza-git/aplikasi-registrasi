@@ -29,7 +29,7 @@ class AplikasiRegistrasiApplicationTests {
 	}
 
 	@Test
-	public void tetConvertClientSecret() throws IOException {
+	public void testConvertClientSecret() throws IOException {
 		byte[] clientSecretJson = Files.readAllBytes(
 				Paths.get(dataStoreFolder + File.separator +
 						AplikasiRegistrasiApplication.CLIENT_SECRET_JSON_FILE));
