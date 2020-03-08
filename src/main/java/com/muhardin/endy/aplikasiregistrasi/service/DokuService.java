@@ -45,12 +45,11 @@ public class DokuService {
         Peserta p = tagihan.getPendaftaran().getPeserta();
         Pendaftaran pendaf = tagihan.getPendaftaran();
 
-        String keterangan = "Pembayaran materi" + pendaf.getMateri() + " - " + pendaf.getPeserta();
         DokuHostedRequestDTO request = DokuHostedRequestDTO.builder().NAME(p.getNama())
                 .EMAIL(p.getEmail()).MALLID(merchantId).CHAINMERCHANT("NA")
                 .AMOUNT(decFormat.format(pendaf.getMateri().getBiaya())).PURCHASEAMOUNT(decFormat.format(pendaf.getMateri().getBiaya()))
                 .TRANSIDMERCHANT(tagihan.getNomorInvoice()).PAYMENTCHANNEL("").REQUESTDATETIME(dateFormat.format(new Date()))
-                .CURRENCY("360").PURCHASECURRENCY("360").SESSIONID("1234567890").BASKET(keterangan).build();
+                .CURRENCY("360").PURCHASECURRENCY("360").SESSIONID("1234567890").BASKET(tagihan.getKeterangan()).build();
 
         String words = DigestUtils.sha1Hex(request.getAMOUNT() + request.getMALLID() + sharedKey + request.getTRANSIDMERCHANT());
         request.setWORDS(words);

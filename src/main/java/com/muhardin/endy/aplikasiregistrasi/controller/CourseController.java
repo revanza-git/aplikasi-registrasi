@@ -5,7 +5,10 @@ import com.muhardin.endy.aplikasiregistrasi.dao.PesertaDao;
 import com.muhardin.endy.aplikasiregistrasi.entity.Materi;
 import com.muhardin.endy.aplikasiregistrasi.entity.Peserta;
 import com.muhardin.endy.aplikasiregistrasi.entity.Tagihan;
+import com.muhardin.endy.aplikasiregistrasi.service.DokuService;
 import com.muhardin.endy.aplikasiregistrasi.service.RegistrationService;
+import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRequestDTO;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -28,6 +32,8 @@ public class CourseController {
     @Autowired private PesertaDao pesertaDao;
 
     @Autowired private RegistrationService registrationService;
+    @Autowired private DokuService dokuService;
+
 
     @GetMapping("/list")
     public ModelMap list(Pageable pageable) {
@@ -50,9 +56,11 @@ public class CourseController {
     }
 
     @PostMapping("/enroll")
-    public String processEnrollment(@RequestParam Peserta peserta, @RequestParam Materi materi) {
-        registrationService.daftarWorkshop(peserta, materi);
-        return "redirect:enrollment_confirmation";
+    public String processEnrollment(@RequestParam Peserta peserta, @RequestParam Materi materi, RedirectAttributes redir) {
+        DokuHostedRequestDTO dokuRequest = registrationService.daftarWorkshop(peserta, materi);
+        redir.addFlashAttribute("dokuUrl", dokuService.getDokuUrl()+"Receive");
+        redir.addFlashAttribute("redirect", dokuRequest);
+        return "redirect:/doku/continue";
     }
 
     @GetMapping("/enrollment_confirmation")
