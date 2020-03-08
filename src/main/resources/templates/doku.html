@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <link href="favicon.ico" rel="icon" />
+
+    <title>JVM Workshop Confirmation with DOKU</title>
+
+    <!-- Bootstrap core CSS -->
+    <link crossorigin="anonymous" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet" />
+
+    <link rel="stylesheet" th:href="@{css/style.css}" />
+    <link rel="stylesheet" th:href="@{css/loader.css}" />
+
+</head>
+
+<body onload="redirect()">
+    <div id="loader"></div>
+    <form id="redirect" th:object="${redirect}" th:action="|${dokuUrl}|" method="post">
+        <input type="hidden" th:field="*{NAME}" id="NAME" placeholder="Name" class="form-control">
+        <input type="hidden" th:field="*{EMAIL}" id="EMAIL" placeholder="Name" class="form-control">
+        <input type="hidden" th:field="*{MALLID}" id="MALLID" placeholder="Email" class="form-control">
+        <input type="hidden" th:field="*{CHAINMERCHANT}" id="CHAINMERCHANT" placeholder="CHAINMERCHANT"
+            class="form-control">
+        <input type="hidden" th:field="*{TRANSIDMERCHANT}" id="TRANSIDMERCHANT" placeholder="TRANSIDMERCHANT"
+            class="form-control">
+        <input type="hidden" th:field="*{PAYMENTCHANNEL}" id="PAYMENTCHANNEL" placeholder="" class="form-control">
+        <input type="hidden" th:field="*{PURCHASEAMOUNT}" id="PURCHASEAMOUNT" placeholder="PURCHASEAMOUNT"
+            class="form-control">
+        <input type="hidden" th:field="*{AMOUNT}" id="AMOUNT" placeholder="AMOUNT" class="form-control">
+        <input type="hidden" th:field="*{REQUESTDATETIME}" id="REQUESTDATETIME" placeholder="REQUESTDATETIME"
+            class="form-control">
+        <input type="hidden" th:field="*{CURRENCY}" id="CURRENCY" placeholder="360" class="form-control">
+        <input type="hidden" th:field="*{PURCHASECURRENCY}" id="PURCHASECURRENCY" placeholder="360" class="form-control">
+        <input type="hidden" th:field="*{SESSIONID}" id="SESSIONID" placeholder="360" class="form-control">
+        <input type="hidden" th:field="*{WORDS}"  id="WORDS">
+    </form>
+</body>
+<script>
+    function redirect() {
+        myVar = setTimeout(document.getElementById("redirect").submit(), 5000);
+    }
+</script>
+
+</html>

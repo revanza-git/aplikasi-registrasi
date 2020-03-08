@@ -7,6 +7,8 @@ import com.muhardin.endy.aplikasiregistrasi.dao.PesertaDao;
 import com.muhardin.endy.aplikasiregistrasi.dao.TagihanDao;
 import com.muhardin.endy.aplikasiregistrasi.dao.VerifikasiEmailDao;
 import com.muhardin.endy.aplikasiregistrasi.entity.*;
+import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRequestDTO;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,10 +35,12 @@ public class RegistrationService {
     @Value("${gmail.account.username}")
     private String mailFrom;
 
+
     @Autowired private PesertaDao pesertaDao;
     @Autowired private VerifikasiEmailDao verifikasiEmailDao;
     @Autowired private PendaftaranDao pendaftaranDao;
     @Autowired private TagihanDao tagihanDao;
+    @Autowired private DokuService dokuService;
 
     @Autowired private EmailService emailService;
     @Autowired private MustacheFactory mustacheFactory;
@@ -57,7 +61,7 @@ public class RegistrationService {
         kirimVerifikasi(ve, generatedPassword);
     }
 
-    public void daftarWorkshop(Peserta p, Materi m) {
+    public DokuHostedRequestDTO daftarWorkshop(Peserta p, Materi m) {
         Pendaftaran pendaftaran = new Pendaftaran();
         pendaftaran.setMateri(m);
         pendaftaran.setPeserta(p);
@@ -77,6 +81,8 @@ public class RegistrationService {
         tagihanDao.save(tagihan);
 
         kirimTagihan(tagihan);
+        return dokuService.createDokuRequest(tagihan);
+
     }
 
     private void kirimTagihan(Tagihan tagihan) {
