@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -33,7 +34,8 @@ public class RegistrationController {
     @PostMapping("/form")
     public String prosesFormRegistrasi(@ModelAttribute @Valid Peserta peserta,
                                        BindingResult errors,
-                                       SessionStatus status) {
+                                       SessionStatus status,
+                                       RedirectAttributes redir) {
         log.info("Seharusnya nanti di sini insert ke database");
 
         if (errors.hasErrors()) {
@@ -47,7 +49,7 @@ public class RegistrationController {
         ModelAndView mav = new ModelAndView("konfirmasi");
         return mav;
          */
-
+        redir.addFlashAttribute("email", peserta.getEmail());
         return "redirect:confirmation";
     }
 
