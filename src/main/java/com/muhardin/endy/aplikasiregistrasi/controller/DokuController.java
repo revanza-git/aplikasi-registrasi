@@ -1,19 +1,27 @@
 package com.muhardin.endy.aplikasiregistrasi.controller;
 
+import java.io.StringWriter;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 import com.muhardin.endy.aplikasiregistrasi.dao.PembayaranDao;
 import com.muhardin.endy.aplikasiregistrasi.dao.TagihanDao;
 import com.muhardin.endy.aplikasiregistrasi.entity.Pembayaran;
 import com.muhardin.endy.aplikasiregistrasi.entity.Tagihan;
 import com.muhardin.endy.aplikasiregistrasi.service.DokuService;
 import com.muhardin.endy.aplikasiregistrasi.service.DokuUtils;
+import com.muhardin.endy.aplikasiregistrasi.service.EmailService;
+import com.muhardin.endy.aplikasiregistrasi.service.RegistrationService;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedIdentifyDTO;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedNotifyDTO;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRedirectDTO;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRequestDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,6 +41,15 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class DokuController {
 
+
+    @Value("${gmail.account.username}")
+    private String mailFrom;
+
+    @Autowired private MustacheFactory mustacheFactory;
+
+    @Autowired
+    EmailService emailService;
+
     @Autowired
     DokuService dokuService;
 
@@ -50,7 +67,28 @@ public class DokuController {
     @PostMapping(value = "/notify")
     @ResponseBody public String notify(DokuHostedNotifyDTO request){
         log.info(request.toString());
-        dokuService.processNotify(request);
+        Pembayaran bayar = dokuService.processNotify(request);
+        if (bayar != null) {
+            Mustache templateEmail =
+                    mustacheFactory.compile("templates/notification/payment.html");
+            Map<String, String> data = new HashMap<>();
+            data.put("bank", bayar.getTagihan().getBank());
+            data.put("rekening", bayar.getTagihan().getNomorRekening());
+            data.put("nama", bayar.getTagihan().getNamaRekening());
+            data.put("nilai", bayar.getTagihan().getNilai().toPlainString());
+            data.put("waktu", bayar.getWaktuPembayaran().toString());
+            data.put("referensi", bayar.getReferensi());
+
+            StringWriter output = new StringWriter();
+            templateEmail.execute(output, data);
+
+            emailService.kirimEmail(
+                    mailFrom,
+                    bayar.getTagihan().getPendaftaran().getPeserta().getEmail(),
+                    "Konfirmasi Pembayaran Tagihan "+bayar.getTagihan().getNomorInvoice(),
+                    output.toString());
+        }
+
         return "CONTINUE";
     }
 

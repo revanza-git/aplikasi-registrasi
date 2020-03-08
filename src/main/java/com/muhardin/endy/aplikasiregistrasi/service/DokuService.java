@@ -69,7 +69,7 @@ public class DokuService {
         return request;
     }
 
-    public void processNotify(DokuHostedNotifyDTO request){
+    public Pembayaran processNotify(DokuHostedNotifyDTO request){
         String wordsComponent = "".concat(new DecimalFormat("0.00").format(request.getAMOUNT())).concat(merchantId).concat(sharedKey).concat(request.getTRANSIDMERCHANT()).concat(request.getRESULTMSG()).concat(request.getVERIFYSTATUS());
         if(request.getCURRENCY()!=null && !request.getCURRENCY().equals("360")){
             wordsComponent = wordsComponent.concat(request.getCURRENCY());
@@ -90,8 +90,11 @@ public class DokuService {
                 t.setLunas(true);
                 tagihanDao.save(t); 
             }
-        }
 
+            return pembayaran;
+        }
+        log.warn("Checkword gagal");
+        return null;
     }
 
 
