@@ -25,4 +25,7 @@ public class Pembayaran {
 
     @NotEmpty
     private String referensi;
+
+    private String dokuResponseCode;
+
 }
