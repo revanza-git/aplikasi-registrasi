@@ -10,11 +10,14 @@ import com.muhardin.endy.aplikasiregistrasi.entity.*;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRequestDTO;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.mortbay.log.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.StringWriter;
 import java.time.LocalDateTime;
@@ -23,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Service @Transactional
+@Service @Transactional @Slf4j
 public class RegistrationService {
 
     @Value("${token.expiry.days}")
@@ -117,6 +120,9 @@ public class RegistrationService {
 
         StringWriter output = new StringWriter();
         templateEmail.execute(output, data);
+
+        log.info("PASSWORD: " + password);
+        log.info("NAMA: " + ve.getPeserta().getNama());
 
         emailService.kirimEmail(
                 mailFrom,
