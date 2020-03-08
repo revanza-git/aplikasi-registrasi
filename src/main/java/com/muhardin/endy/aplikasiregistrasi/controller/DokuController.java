@@ -62,13 +62,11 @@ public class DokuController {
     
     //Controller untuk menghandle redirect dari DOKU merchant
     @PostMapping("/redirect")
-    public String redirect(DokuHostedRedirectDTO request, Model model, RedirectAttributes redir) {
-        log.info(request.toString());
-        String redirectUrl = "redirect:/register";
-
+    public String redirect(DokuHostedRedirectDTO request) {
+        log.info(request.toString());   
         // Pasang logic membaca redirect
         
-        return redirectUrl;
+        return "doku_redirect";
     }
     
 }
