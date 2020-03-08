@@ -61,6 +61,7 @@ public class KonfigurasiSecurity extends WebSecurityConfigurerAdapter {
                 .antMatchers("/registration/**")
                 .antMatchers("/js/*")
                 .antMatchers("/img/*")
-                .antMatchers("/css/*");
+                .antMatchers("/css/*")
+                .antMatchers("/doku/*");
     }
 }

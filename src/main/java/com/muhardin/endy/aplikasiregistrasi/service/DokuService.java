@@ -3,15 +3,21 @@ package com.muhardin.endy.aplikasiregistrasi.service;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+import com.muhardin.endy.aplikasiregistrasi.dao.PembayaranDao;
+import com.muhardin.endy.aplikasiregistrasi.dao.TagihanDao;
+import com.muhardin.endy.aplikasiregistrasi.entity.Pembayaran;
 import com.muhardin.endy.aplikasiregistrasi.entity.Pendaftaran;
 import com.muhardin.endy.aplikasiregistrasi.entity.Peserta;
 import com.muhardin.endy.aplikasiregistrasi.entity.Tagihan;
+import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedNotifyDTO;
 import com.muhardin.endy.aplikasiregistrasi.service.dto.request.DokuHostedRequestDTO;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +38,12 @@ public class DokuService {
 
     @Value("${doku.url}")
     private String dokuUrl;
+
+    @Autowired
+    TagihanDao tagihanDao;
+
+    @Autowired
+    PembayaranDao pembayaranDao;
 
     private DecimalFormat decFormat = new DecimalFormat("0.00");
 
@@ -56,5 +68,31 @@ public class DokuService {
         
         return request;
     }
+
+    public void processNotify(DokuHostedNotifyDTO request){
+        String wordsComponent = "".concat(new DecimalFormat("0.00").format(request.getAMOUNT())).concat(merchantId).concat(sharedKey).concat(request.getTRANSIDMERCHANT()).concat(request.getRESULTMSG()).concat(request.getVERIFYSTATUS());
+        if(request.getCURRENCY()!=null && !request.getCURRENCY().equals("360")){
+            wordsComponent = wordsComponent.concat(request.getCURRENCY());
+        }
+
+        Boolean checkWords = DigestUtils.sha1Hex(wordsComponent).equals(request.getWORDS());
+        
+        if(checkWords){
+            Tagihan t = tagihanDao.findByNomorInvoice(request.getTRANSIDMERCHANT());
+            Pembayaran pembayaran = new Pembayaran();
+            pembayaran.setTagihan(t);
+            pembayaran.setReferensi(request.getAPPROVALCODE());
+            pembayaran.setWaktuPembayaran(LocalDateTime.now());
+            pembayaran.setDokuResponseCode(request.getRESPONSECODE());
+            pembayaranDao.save(pembayaran);
+            Boolean amountOk = t.getPendaftaran().getMateri().getBiaya().equals(request.getAMOUNT());
+            if("0000".equals(request.getRESPONSECODE()) && amountOk){
+                t.setLunas(true);
+                tagihanDao.save(t); 
+            }
+        }
+
+    }
+
 
 }
