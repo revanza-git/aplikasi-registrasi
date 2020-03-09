@@ -56,6 +56,8 @@ public class GMailApiService implements EmailService {
     @PostConstruct
     public void inisialisasiOauth() throws Exception {
 
+        log.info("Started initialized oAuth");
+
         Files.createDirectories(Paths.get(dataStoreFolder));
 
         FileDataStoreFactory fileDataStoreFactory =
