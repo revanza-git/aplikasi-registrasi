@@ -8,7 +8,7 @@
 		<version>2.2.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.muhardin.endy</groupId>
+	<groupId>com.revanza.raytama</groupId>
 	<artifactId>aplikasi-registrasi</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>aplikasi-registrasi</name>
