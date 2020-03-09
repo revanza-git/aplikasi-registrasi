@@ -1,5 +1,6 @@
 package com.muhardin.endy.aplikasiregistrasi;
 
+import com.muhardin.endy.aplikasiregistrasi.config.GmailApiConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,7 +21,7 @@ class AplikasiRegistrasiApplicationTests {
 	public void testConvertStoredCredential() throws IOException {
 		byte[] credentialFile = Files.readAllBytes(
 				Paths.get(dataStoreFolder + File.separator +
-						AplikasiRegistrasiApplication.STORED_CREDENTIAL_FILE));
+						GmailApiConfiguration.STORED_CREDENTIAL_FILE));
 		String base64Encoded
 				= Base64.getEncoder()
 				.encodeToString(credentialFile);
@@ -32,7 +33,7 @@ class AplikasiRegistrasiApplicationTests {
 	public void testConvertClientSecret() throws IOException {
 		byte[] clientSecretJson = Files.readAllBytes(
 				Paths.get(dataStoreFolder + File.separator +
-						AplikasiRegistrasiApplication.CLIENT_SECRET_JSON_FILE));
+						GmailApiConfiguration.CLIENT_SECRET_JSON_FILE));
 		String base64Encoded
 				= Base64.getEncoder()
 				.encodeToString(clientSecretJson);
