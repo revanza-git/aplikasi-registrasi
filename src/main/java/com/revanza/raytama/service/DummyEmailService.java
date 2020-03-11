@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Slf4j
-@Service @Profile("default")
+@Service @Profile("!default")
 public class DummyEmailService implements EmailService {
 
     @Override

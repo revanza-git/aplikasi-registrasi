@@ -37,7 +37,7 @@ public class GmailApiConfiguration {
         return loadGoogleClientSecrets();
     }
 
-    @Bean @Profile("heroku")
+    @Bean @Profile("default")
     public GoogleClientSecrets environmentVariableClientSecrets() throws Exception {
         restoreEnvironmentVariableToFile(CLIENT_SECRET_JSON_ENV, CLIENT_SECRET_JSON_FILE);
         restoreEnvironmentVariableToFile(STORED_CREDENTIAL_ENV, STORED_CREDENTIAL_FILE);

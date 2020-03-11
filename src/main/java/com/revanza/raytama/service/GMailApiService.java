@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Slf4j
-@Service @Profile("!default")
+@Service @Profile("default")
 public class GMailApiService implements EmailService {
     private static final List<String> SCOPES =
             Arrays.asList(GmailScopes.GMAIL_SEND);
@@ -55,8 +55,6 @@ public class GMailApiService implements EmailService {
 
     @PostConstruct
     public void inisialisasiOauth() throws Exception {
-
-        log.info("Started initialized oAuth");
 
         Files.createDirectories(Paths.get(dataStoreFolder));
 
