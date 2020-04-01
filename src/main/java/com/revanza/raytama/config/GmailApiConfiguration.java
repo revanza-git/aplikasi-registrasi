@@ -32,12 +32,12 @@ public class GmailApiConfiguration {
     @Autowired private JsonFactory jsonFactory;
 
     @Bean
-    @Profile("local")
+    @Profile("default")
     public GoogleClientSecrets localFileClientSecrets() throws Exception {
         return loadGoogleClientSecrets();
     }
 
-    @Bean @Profile("default")
+    @Bean @Profile("local")
     public GoogleClientSecrets environmentVariableClientSecrets() throws Exception {
         restoreEnvironmentVariableToFile(CLIENT_SECRET_JSON_ENV, CLIENT_SECRET_JSON_FILE);
         restoreEnvironmentVariableToFile(STORED_CREDENTIAL_ENV, STORED_CREDENTIAL_FILE);
